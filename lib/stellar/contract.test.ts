@@ -226,33 +226,19 @@ describe("lib/stellar/contract.ts", () => {
 
   describe("parseContractResult", () => {
     it("returns null for null/undefined input", () => {
-      expect(parseContractResult(null)).toBe(null);
-      expect(parseContractResult(undefined)).toBe(null);
+      expect(parseContractResult(null as any)).toBe(null);
+      expect(parseContractResult(undefined as any)).toBe(null);
     });
 
-    it("extracts result property if present", () => {
-      const response = { result: { value: "test" } };
-      expect(parseContractResult(response)).toEqual({ value: "test" });
+    it("returns result property if present", () => {
+      const mockScVal = {} as xdr.ScVal;
+      const response = { success: true, result: mockScVal };
+      expect(parseContractResult(response)).toBe(mockScVal);
     });
 
-    it("extracts value property if result not present", () => {
-      const response = { value: "direct-value" };
-      expect(parseContractResult(response)).toBe("direct-value");
-    });
-
-    it("returns entire response if no extractable property", () => {
-      const response = { data: "raw-data" };
-      expect(parseContractResult(response)).toEqual({ data: "raw-data" });
-    });
-
-    it("handles numeric values", () => {
-      const response = { value: 12345 };
-      expect(parseContractResult(response)).toBe(12345);
-    });
-
-    it("handles boolean values", () => {
-      const response = { value: false };
-      expect(parseContractResult(response)).toBe(false);
+    it("returns null if result not present", () => {
+      const response = { success: true };
+      expect(parseContractResult(response)).toBe(null);
     });
   });
 

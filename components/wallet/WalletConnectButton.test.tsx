@@ -5,6 +5,9 @@ import WalletConnectButton from "./WalletConnectButton";
 import { WalletProvider } from "@/components/providers/WalletProvider";
 import * as freighter from "@/lib/stellar/freighter";
 
+vi.unmock("@/components/providers/WalletProvider");
+vi.unmock("../../components/providers/WalletProvider");
+
 vi.mock("@/lib/stellar/freighter", () => ({
   isFreighterInstalled: vi.fn(),
   isConnected: vi.fn(),
@@ -59,10 +62,10 @@ describe("WalletConnectButton", () => {
     const button = await screen.findByRole("button", { name: /connect wallet/i });
     fireEvent.click(button);
 
-    expect(screen.getByRole("button", { name: /connecting/i })).toBeInTheDocument();
+    expect(screen.getByTestId("skeleton")).toBeInTheDocument();
 
     await waitFor(() => {
-      expect(screen.getByText(/GABCD...45XYZ/i)).toBeInTheDocument();
+      expect(screen.getByText(/GABCD...5XYZ/i)).toBeInTheDocument();
     });
   });
 

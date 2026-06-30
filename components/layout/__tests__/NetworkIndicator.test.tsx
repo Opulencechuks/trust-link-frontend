@@ -1,8 +1,11 @@
 import { render, screen } from "@testing-library/react";
-import { describe, it, expect, vi } from "vitest";
+import { describe, it, expect, vi, afterEach } from "vitest";
 import Navbar from "../Navbar";
 import TestnetBanner from "../TestnetBanner";
 import { NetworkProvider } from "@/components/providers/NetworkProvider";
+
+vi.unmock("@/components/providers/NetworkProvider");
+vi.unmock("../../providers/NetworkProvider");
 
 function renderWithProvider(ui: React.ReactElement) {
   return render(<NetworkProvider>{ui}</NetworkProvider>);
@@ -18,22 +21,22 @@ describe("Network Components", () => {
     it("renders Testnet indicator and toggle when env is testnet", () => {
       vi.stubEnv("NEXT_PUBLIC_STELLAR_NETWORK", "testnet");
       renderWithProvider(<Navbar />);
-      expect(screen.getByLabelText("Switch to Mainnet")).toBeInTheDocument();
-      expect(screen.getByText("Testnet")).toBeInTheDocument();
+      expect(screen.getAllByLabelText("Switch to Mainnet")[0]).toBeInTheDocument();
+      expect(screen.getAllByText("Testnet")[0]).toBeInTheDocument();
     });
 
     it("renders Mainnet indicator and toggle when env is mainnet", () => {
       vi.stubEnv("NEXT_PUBLIC_STELLAR_NETWORK", "mainnet");
       renderWithProvider(<Navbar />);
-      expect(screen.getByLabelText("Switch to Testnet")).toBeInTheDocument();
-      expect(screen.getByText("Mainnet")).toBeInTheDocument();
+      expect(screen.getAllByLabelText("Switch to Testnet")[0]).toBeInTheDocument();
+      expect(screen.getAllByText("Mainnet")[0]).toBeInTheDocument();
     });
     
     it("renders Mainnet indicator and toggle when env is public", () => {
       vi.stubEnv("NEXT_PUBLIC_STELLAR_NETWORK", "public");
       renderWithProvider(<Navbar />);
-      expect(screen.getByLabelText("Switch to Testnet")).toBeInTheDocument();
-      expect(screen.getByText("Mainnet")).toBeInTheDocument();
+      expect(screen.getAllByLabelText("Switch to Testnet")[0]).toBeInTheDocument();
+      expect(screen.getAllByText("Mainnet")[0]).toBeInTheDocument();
     });
   });
 

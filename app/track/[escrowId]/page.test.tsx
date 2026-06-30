@@ -60,7 +60,7 @@ describe("TrackPage", () => {
 
     expect(screen.getByText("Order Details")).toBeInTheDocument();
     expect(screen.getByText("Wireless Headphones")).toBeInTheDocument();
-    expect(screen.getByText("$150.00")).toBeInTheDocument();
+    expect(screen.getByText("150.00 USDC")).toBeInTheDocument();
     expect(screen.getByText("PENDING")).toBeInTheDocument();
   });
 

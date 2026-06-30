@@ -4,10 +4,11 @@ import userEvent from "@testing-library/user-event";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import type { Escrow } from "@/types";
 
+import * as api from "../../../lib/api";
+
 // Mock the API so the list renders deterministic escrows with known dates.
-const getVendorEscrows = vi.fn();
-vi.mock("@/lib/api", () => ({
-  getVendorEscrows: (token?: string) => getVendorEscrows(token),
+vi.mock("../../../lib/api", () => ({
+  getVendorEscrows: vi.fn(),
 }));
 
 // Stub the heavy PDF/CSV-export child so the test stays focused on filtering.
@@ -41,8 +42,8 @@ const ESCROWS: Escrow[] = [
 
 describe("VendorDashboardList — date range filter (issue #72)", () => {
   beforeEach(() => {
-    getVendorEscrows.mockReset();
-    getVendorEscrows.mockResolvedValue(ESCROWS);
+    vi.mocked(api.getVendorEscrows).mockReset();
+    vi.mocked(api.getVendorEscrows).mockResolvedValue(ESCROWS);
     window.localStorage.clear();
   });
 
@@ -104,7 +105,7 @@ describe("VendorDashboardList — date range filter (issue #72)", () => {
 
     await waitFor(() =>
       expect(
-        screen.getByText(/no escrows match the selected date range/i)
+        screen.getByText(/No escrows found matching your criteria/i)
       ).toBeInTheDocument()
     );
   });
@@ -118,7 +119,7 @@ describe("VendorDashboardList — date range filter (issue #72)", () => {
       expect(screen.queryByText("January Item")).not.toBeInTheDocument()
     );
 
-    await userEvent.click(screen.getByRole("button", { name: "Clear" }));
+    await userEvent.click(screen.getByRole("button", { name: "Clear dates" }));
     await waitFor(() => expect(screen.getByText("January Item")).toBeInTheDocument());
     expect(screen.getByText("March Item")).toBeInTheDocument();
     expect(screen.getByText("June Item")).toBeInTheDocument();

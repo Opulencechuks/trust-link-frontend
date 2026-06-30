@@ -2,14 +2,17 @@ import { render, screen, act } from "@testing-library/react";
 import { WalletProvider, useWallet } from "./WalletProvider";
 import { NetworkProvider } from "./NetworkProvider";
 import { describe, it, expect, vi, beforeEach } from "vitest";
+
+vi.unmock("@/components/providers/WalletProvider");
+vi.unmock("./WalletProvider");
 import * as freighter from "@/lib/stellar/freighter";
 import * as stellar from "@/lib/stellar";
 
 vi.mock("@/lib/stellar/freighter", () => ({
   getPublicKey: vi.fn(),
   signTransaction: vi.fn(),
-  isConnected: vi.fn(),
-  isFreighterInstalled: vi.fn(),
+  isConnected: vi.fn().mockResolvedValue(true),
+  isFreighterInstalled: vi.fn().mockResolvedValue(true),
   connectFreighter: vi.fn(),
 }));
 
@@ -30,7 +33,7 @@ function TestComponent() {
       <div data-testid="token">{token}</div>
       <div data-testid="isLoading">{isLoading.toString()}</div>
       <div data-testid="error">{error}</div>
-      <button onClick={connect}>Connect</button>
+      <button onClick={() => connect().catch(() => {})}>Connect</button>
     </div>
   );
 }
@@ -51,7 +54,7 @@ describe("WalletProvider SEP-10 Flow", () => {
     const mockToken = "jwt-token";
 
     vi.mocked(freighter.isConnected).mockResolvedValue(true);
-    vi.mocked(freighter.getPublicKey!).mockResolvedValue(mockPubKey);
+    vi.mocked(freighter.connectFreighter).mockResolvedValue(mockPubKey);
     vi.mocked(stellar.getChallenge).mockResolvedValue(mockChallenge);
     vi.mocked(freighter.signTransaction).mockResolvedValue(mockSignedXdr);
     vi.mocked(stellar.verifyChallenge).mockResolvedValue(mockToken);
@@ -72,7 +75,7 @@ describe("WalletProvider SEP-10 Flow", () => {
 
   it("handles errors during authentication", async () => {
     vi.mocked(freighter.isConnected).mockResolvedValue(true);
-    vi.mocked(freighter.getPublicKey!).mockResolvedValue("GABC123");
+    vi.mocked(freighter.connectFreighter).mockResolvedValue("GABC123");
     vi.mocked(stellar.getChallenge).mockRejectedValue(new Error("Challenge failed"));
 
     renderWithProviders(<TestComponent />);

@@ -38,10 +38,14 @@ export default function EscrowLinkCard({
   loading = false,
   onCopySuccess,
   onCopyError,
+  showQRCode = true,
+  showWhatsApp = true,
 }: {
   loading?: boolean;
   onCopySuccess?: () => void;
   onCopyError?: (err: Error) => void;
+  showQRCode?: boolean;
+  showWhatsApp?: boolean;
 }) {
   const [link, setLink] = useState<{
     title: string;
@@ -56,7 +60,6 @@ export default function EscrowLinkCard({
   const [isCopying, setIsCopying] = useState(false);
   const [copyStatus, setCopyStatus] = useState<"idle" | "success" | "error">("idle");
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
-  const showQRCode = true;
 
   const copyToClipboard = async (text: string) => {
     if (!navigator.clipboard || !navigator.clipboard.writeText) {
@@ -273,16 +276,18 @@ export default function EscrowLinkCard({
           >
             <Copy className="h-4 w-4" />
           </Button>
-          <Button 
-            variant="outline" 
-            size="icon" 
-            onClick={shareWhatsApp} 
-            aria-label="Share on WhatsApp"
-            title="Share on WhatsApp"
-            className="hover:bg-green-50 dark:hover:bg-green-950"
-          >
-            <MessageCircle className="h-4 w-4" />
-          </Button>
+          {showWhatsApp && (
+            <Button 
+              variant="outline" 
+              size="icon" 
+              onClick={shareWhatsApp} 
+              aria-label="Share on WhatsApp"
+              title="Share on WhatsApp"
+              className="hover:bg-green-50 dark:hover:bg-green-950"
+            >
+              <MessageCircle className="h-4 w-4" />
+            </Button>
+          )}
           <Button 
             variant="outline" 
             size="icon" 

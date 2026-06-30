@@ -3,6 +3,9 @@ import userEvent from "@testing-library/user-event";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import useWallet from "./useWallet";
 import { WalletProvider } from "@/components/providers/WalletProvider";
+
+vi.unmock("@/components/providers/WalletProvider");
+vi.unmock("../components/providers/WalletProvider");
 import * as freighter from "@/lib/stellar/freighter";
 import * as stellarAuth from "@/lib/stellar";
 
@@ -77,8 +80,10 @@ describe("useWallet", () => {
 
     await userEvent.click(screen.getByRole("button", { name: /^Connect$/i }));
 
-    await waitFor(() => expect(window.localStorage.getItem("wallet.token")).toBe("sep10-jwt"));
-    expect(screen.getByTestId("token")).toHaveTextContent("sep10-jwt");
+    await waitFor(() => {
+      expect(screen.getByTestId("token")).toHaveTextContent("sep10-jwt");
+    });
+    expect(window.localStorage.getItem("wallet.token")).toBe("sep10-jwt");
   });
 
   it("disconnects and clears publicKey and token", async () => {

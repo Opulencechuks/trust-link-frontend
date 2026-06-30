@@ -49,8 +49,7 @@ const defaultProps = {
 describe("PaymentForm", () => {
   beforeEach(() => {
     vi.clearAllMocks();
-    (useWallet as any).mockReturnValue({ isConnected: true, status: "connected" });
-    vi.mocked(useWallet).mockReturnValue({ isConnected: true });
+    vi.mocked(useWallet).mockReturnValue({ isConnected: true, status: "connected" });
   });
 
   it("renders payment summary and shows amount/fee/total correctly", () => {

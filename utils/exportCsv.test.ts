@@ -45,12 +45,14 @@ describe("downloadCsv", () => {
     ];
 
     // Capture Blob content
+    const OriginalBlob = globalThis.Blob;
     let blobContent = "";
-    const BlobSpy = vi.fn((parts: BlobPart[]) => {
+    const MockBlob = function (parts: BlobPart[], options?: BlobPropertyBag) {
       blobContent = parts.join("");
-      return new Blob(parts);
-    });
-    vi.stubGlobal("Blob", BlobSpy);
+      return new OriginalBlob(parts, options);
+    };
+    MockBlob.prototype = OriginalBlob.prototype;
+    vi.stubGlobal("Blob", MockBlob);
 
     downloadCsv(rows, columns, "export.csv");
 
@@ -75,12 +77,14 @@ describe("downloadCsv", () => {
       { key: "value", header: "Value" },
     ];
 
+    const OriginalBlob = globalThis.Blob;
     let blobContent = "";
-    const BlobSpy = vi.fn((parts: BlobPart[]) => {
+    const MockBlob = function (parts: BlobPart[], options?: BlobPropertyBag) {
       blobContent = parts.join("");
-      return new Blob(parts);
-    });
-    vi.stubGlobal("Blob", BlobSpy);
+      return new OriginalBlob(parts, options);
+    };
+    MockBlob.prototype = OriginalBlob.prototype;
+    vi.stubGlobal("Blob", MockBlob);
 
     downloadCsv(rows, columns, "test.csv");
 

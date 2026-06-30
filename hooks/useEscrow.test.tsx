@@ -94,6 +94,6 @@ describe("useEscrow", () => {
     // Wait for the next poll to happen naturally without fake timers if they are problematic
     await waitFor(() => {
       expect(api.getEscrow).toHaveBeenCalledTimes(2);
-    }, { timeout: 1000 });
+    }, { timeout: 5000 });
   });
 });

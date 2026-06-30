@@ -74,15 +74,27 @@ describe("TrackingTimeline", () => {
 
   it("shows Confirm Delivery button when status is SHIPPED", () => {
     const shippedEscrow = { ...mockEscrow, status: "SHIPPED" as const };
+    vi.mocked(useEscrow).mockReturnValue({
+      escrow: shippedEscrow,
+      isLoading: false,
+      error: undefined,
+      refetch: vi.fn(),
+    });
     render(
       <TrackingTimeline escrowId="esc_123" initialEscrow={shippedEscrow} />
     );
 
-    expect(screen.getByText("Confirm Delivery")).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /Confirm Delivery/i })).toBeInTheDocument();
   });
 
   it("shows Raise a Dispute button when status is SHIPPED", () => {
     const shippedEscrow = { ...mockEscrow, status: "SHIPPED" as const };
+    vi.mocked(useEscrow).mockReturnValue({
+      escrow: shippedEscrow,
+      isLoading: false,
+      error: undefined,
+      refetch: vi.fn(),
+    });
     render(
       <TrackingTimeline escrowId="esc_123" initialEscrow={shippedEscrow} />
     );
@@ -101,6 +113,13 @@ describe("TrackingTimeline", () => {
 
   it("shows dispute status when order is disputed", () => {
     const disputedEscrow = { ...mockEscrow, status: "DISPUTED" as const };
+    vi.mocked(useEscrow).mockReturnValue({
+      escrow: disputedEscrow,
+      isLoading: false,
+      error: undefined,
+      refetch: vi.fn(),
+    });
+
     render(
       <TrackingTimeline escrowId="esc_123" initialEscrow={disputedEscrow} />
     );
@@ -110,6 +129,12 @@ describe("TrackingTimeline", () => {
 
   it("highlights completed stages correctly for FUNDED status", () => {
     const fundedEscrow = { ...mockEscrow, status: "FUNDED" as const };
+    vi.mocked(useEscrow).mockReturnValue({
+      escrow: fundedEscrow,
+      isLoading: false,
+      error: undefined,
+      refetch: vi.fn(),
+    });
     render(
       <TrackingTimeline escrowId="esc_123" initialEscrow={fundedEscrow} />
     );
@@ -121,6 +146,12 @@ describe("TrackingTimeline", () => {
 
   it("highlights all stages as completed for COMPLETED status", () => {
     const completedEscrow = { ...mockEscrow, status: "COMPLETED" as const };
+    vi.mocked(useEscrow).mockReturnValue({
+      escrow: completedEscrow,
+      isLoading: false,
+      error: undefined,
+      refetch: vi.fn(),
+    });
     render(
       <TrackingTimeline escrowId="esc_123" initialEscrow={completedEscrow} />
     );

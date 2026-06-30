@@ -60,6 +60,9 @@ export function WalletProvider({ children }: { children: React.ReactNode }) {
       const signedXdr = await freighterSignTransaction(challengeXdr, net);
       const jwt = await verifyChallenge(signedXdr);
       setToken(jwt);
+      if (typeof window !== "undefined") {
+        localStorage.setItem(TOKEN_STORAGE_KEY, jwt);
+      }
       return jwt;
     } catch (err: unknown) {
       console.error("Authentication failed:", err);

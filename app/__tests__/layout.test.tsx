@@ -9,6 +9,9 @@ import { toast } from "sonner";
 import { useEffect } from "react";
 import userEvent from "@testing-library/user-event";
 
+vi.unmock("@/components/providers/WalletProvider");
+vi.unmock("../../components/providers/WalletProvider");
+
 // Mock matchMedia for tests
 Object.defineProperty(window, 'matchMedia', {
   writable: true,

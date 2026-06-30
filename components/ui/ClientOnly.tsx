@@ -6,7 +6,15 @@ export default function ClientOnly({ children }: { children: React.ReactNode }) 
   const [hasMounted, setHasMounted] = useState(false);
 
   useEffect(() => {
-    setHasMounted(true);
+    let active = true;
+    setTimeout(() => {
+      if (active) {
+        setHasMounted(true);
+      }
+    }, 0);
+    return () => {
+      active = false;
+    };
   }, []);
 
   if (!hasMounted) {
