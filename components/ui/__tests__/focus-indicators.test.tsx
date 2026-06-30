@@ -5,8 +5,8 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 import { Accordion } from "../Accordion";
 import ThemeToggle from "../ThemeToggle";
 
-vi.mock("@/components/providers/ThemeProvider", () => ({
-  useTheme: () => ({ theme: "light", setTheme: vi.fn() }),
+vi.mock("next-themes", () => ({
+  useTheme: () => ({ theme: "light", setTheme: vi.fn(), resolvedTheme: "light" }),
 }));
 
 vi.mock("next/navigation", () => ({

@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { NetworkProvider } from "@/components/providers/NetworkProvider";
@@ -12,11 +12,11 @@ import Navbar from "@/components/layout/Navbar";
 import TestnetBanner from "@/components/layout/TestnetBanner";
 import OfflineBanner from "@/components/layout/OfflineBanner";
 import { ServiceWorkerProvider } from "@/components/providers/ServiceWorkerProvider";
-import { ThemeProvider } from "@/components/providers/ThemeProvider";
 import { Toaster } from "sonner";
 import { Suspense } from "react";
 import TopProgressBar from "@/components/ui/TopProgressBar";
 import { ThemeProvider } from "next-themes";
+import CommandPalette from "@/components/ui/CommandPalette";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -36,7 +36,7 @@ export const metadata: Metadata = {
   description: "The Web2 experience. The Web3 guarantee.",
 };
 
-export const viewport = {
+export const viewport: Viewport = {
   themeColor: "#1B2A6B",
 };
 

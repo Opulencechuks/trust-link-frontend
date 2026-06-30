@@ -40,6 +40,7 @@ vi.mock("next/font/google", () => ({
 // Mock Next.js router and other hooks if needed
 vi.mock("next/navigation", () => ({
   usePathname: () => "/",
+  useSearchParams: () => new URLSearchParams(),
   useRouter: () => ({
     push: vi.fn(),
     replace: vi.fn(),

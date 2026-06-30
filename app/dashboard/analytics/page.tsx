@@ -1,6 +1,6 @@
 import { Suspense } from "react";
-import dynamic from 'next/dynamic';
-const VendorAnalyticsSection = dynamic(() => import('@/components/dashboard/VendorAnalyticsSection'), { ssr: false });
+import ClientOnly from "@/components/ui/ClientOnly";
+import VendorAnalyticsSection from "@/components/dashboard/VendorAnalyticsSection";
 
 export const metadata = {
   title: "Vendor Analytics | TrustLink",
@@ -10,7 +10,9 @@ export const metadata = {
 export default function VendorAnalyticsPage() {
   return (
     <Suspense fallback={null}>
-      <VendorAnalyticsSection />
+      <ClientOnly>
+        <VendorAnalyticsSection />
+      </ClientOnly>
     </Suspense>
   );
 }
